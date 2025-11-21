@@ -55,37 +55,32 @@
     </dependencies>
 
     <build>
-        <finalName>app</finalName>
+    <finalName>app</finalName>
 
-        <plugins>
+    <plugins>
 
-            <!-- Disable Boot-Repackage (IMPORTANT!!) -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <enabled>false</enabled>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+        <!-- Completely disable repackage, do NOT bind it -->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </plugin>
 
-            <!-- Ensure proper WAR creation -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+        <!-- Proper WAR builder -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.3.2</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+                <packagingExcludes>WEB-INF/lib-provided/**</packagingExcludes>
+            </configuration>
+        </plugin>
 
-        </plugins>
-    </build>
+    </plugins>
+</build>
+
 
 </project>
