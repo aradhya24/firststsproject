@@ -30,10 +30,10 @@ resource "aws_security_group" "allow_ssh_tomcat" {
 }
 
 # ---------------------------------
-# EC2 Instance (with Tomcat9 install)
+# EC2 Instance (Ubuntu 24.04 + Tomcat 10)
 # ---------------------------------
 resource "aws_instance" "my_ec2" {
-  ami                    = "ami-01fd6fa49060e89a6"   # ✔ Correct Tomcat-supported AMI
+  ami                    = "ami-0fa91bc90632c73c9"   # Ubuntu 24.04
   instance_type          = "t3.micro"
   key_name               = "aradhya"
   availability_zone      = "eu-north-1a"
@@ -44,15 +44,25 @@ resource "aws_instance" "my_ec2" {
   user_data = <<-EOF
 #!/bin/bash
 apt update -y
+
+# Install Java
 apt install -y openjdk-17-jdk
-apt install -y tomcat9 tomcat9-admin tomcat9-common
-mkdir -p /var/lib/tomcat9/webapps
-chown -R tomcat:tomcat /var/lib/tomcat9/webapps
-systemctl enable tomcat9
-systemctl start tomcat9
+
+# Install Tomcat10
+apt install -y tomcat10 tomcat10-admin tomcat10-common
+
+mkdir -p /var/lib/tomcat10/webapps
+chown -R tomcat:tomcat /var/lib/tomcat10/webapps
+
+systemctl enable tomcat10
+systemctl restart tomcat10
 EOF
 
   tags = {
     Name = "firststsproject"
   }
+}
+
+output "public_ip" {
+  value = aws_instance.my_ec2.public_ip
 }
