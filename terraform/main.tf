@@ -1,6 +1,8 @@
 # ---------------------------------
 # Security Group for SSH + Tomcat
 # ---------------------------------
+
+
 resource "aws_security_group" "allow_ssh_tomcat" {
   name        = "allow_ssh_tomcat"
   description = "Allow SSH and Tomcat"
