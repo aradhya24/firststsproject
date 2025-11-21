@@ -52,31 +52,32 @@
     </dependencies>
 
     <build>
-        <!-- WAR name -->
-        <finalName>app</finalName>
+    <finalName>app</finalName>
 
-        <plugins>
+    <plugins>
 
-            <!-- Disable Spring Boot repackage -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
+        <!-- Disable Spring Boot repackaging -->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <skip>true</skip>
+                <layout>WAR</layout>  <!-- IMPORTANT -->
+            </configuration>
+        </plugin>
 
-            <!-- Proper WAR for Tomcat -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+        <!-- Proper WAR for Tomcat -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.3.2</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        </plugin>
 
-        </plugins>
-    </build>
+    </plugins>
+</build>
+
 
 </project>
