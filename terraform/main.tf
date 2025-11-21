@@ -33,7 +33,7 @@ resource "aws_security_group" "allow_ssh_tomcat" {
 # EC2 Instance (with Tomcat9 install)
 # ---------------------------------
 resource "aws_instance" "my_ec2" {
-  ami                    = "ami-0a716d3f3b16d290c"
+  ami                    = "ami-0526a207cecd12e8d"   # ✔ Correct Tomcat-supported AMI
   instance_type          = "t3.micro"
   key_name               = "aradhya"
   availability_zone      = "eu-north-1a"
