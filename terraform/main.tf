@@ -2,11 +2,51 @@ provider "aws" {
   region = "eu-north-1"
 }
 
+# ---------------------------------
+# Security Group for SSH + Tomcat
+# ---------------------------------
+resource "aws_security_group" "allow_ssh_tomcat" {
+  name        = "allow_ssh_tomcat"
+  description = "Allow SSH and Tomcat"
+  
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Tomcat"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ---------------------------------
+# EC2 Instance
+# ---------------------------------
 resource "aws_instance" "my_ec2" {
-  ami           = "ami-0a716d3f3b16d290c" 
-  instance_type = "t3.micro"
-  availability_zone = "eu-north-1a"
-  key_name      = "aradhya"
+  ami                    = "ami-0a716d3f3b16d290c"
+  instance_type          = "t3.micro"
+  key_name               = "aradhya"
+  availability_zone      = "eu-north-1a"
+
+  # IMPORTANT: enable public IP
+  associate_public_ip_address = true
+
+  # attach security group
+  vpc_security_group_ids = [aws_security_group.allow_ssh_tomcat.id]
 
   tags = {
     Name = "firststsproject"
