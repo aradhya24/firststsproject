@@ -41,14 +41,20 @@ resource "aws_instance" "my_ec2" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.allow_ssh_tomcat.id]
 
-  user_data = <<-EOF
+user_data = <<-EOF
 #!/bin/bash
 apt update -y
 apt install -y openjdk-17-jdk
-apt install -y tomcat10 tomcat10-admin tomcat10-common
+apt install -y tomcat10 tomcat10-admin tomcat10-common tomcat10-user
+
+# Create Tomcat webapps folder (fix for Ubuntu AMIs)
+mkdir -p /var/lib/tomcat10/webapps
+chown -R tomcat:tomcat /var/lib/tomcat10/webapps
+
 systemctl enable tomcat10
 systemctl start tomcat10
 EOF
+
 
   tags = {
     Name = "firststsproject"
