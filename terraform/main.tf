@@ -8,7 +8,7 @@ provider "aws" {
 resource "aws_security_group" "allow_ssh_tomcat" {
   name        = "allow_ssh_tomcat"
   description = "Allow SSH and Tomcat"
-  
+
   ingress {
     description = "SSH"
     from_port   = 22
@@ -34,7 +34,7 @@ resource "aws_security_group" "allow_ssh_tomcat" {
 }
 
 # ---------------------------------
-# EC2 Instance
+# EC2 Instance (with Tomcat install)
 # ---------------------------------
 resource "aws_instance" "my_ec2" {
   ami                    = "ami-0a716d3f3b16d290c"
@@ -42,11 +42,19 @@ resource "aws_instance" "my_ec2" {
   key_name               = "aradhya"
   availability_zone      = "eu-north-1a"
 
-  # IMPORTANT: enable public IP
   associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.allow_ssh_tomcat.id]
 
-  # attach security group
-  vpc_security_group_ids = [aws_security_group.allow_ssh_tomcat.id]
+  # ------ INSTALL JAVA + TOMCAT AUTOMATICALLY ------
+  user_data = <<-EOF
+#!/bin/bash
+apt update -y
+apt install -y openjdk-17-jdk
+apt install -y tomcat10 tomcat10-admin tomcat10-common
+
+systemctl enable tomcat10
+systemctl start tomcat10
+EOF
 
   tags = {
     Name = "firststsproject"
