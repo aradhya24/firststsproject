@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-north-1"
-}
-
 # ---------------------------------
 # Security Group for SSH + Tomcat
 # ---------------------------------
@@ -45,13 +41,11 @@ resource "aws_instance" "my_ec2" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.allow_ssh_tomcat.id]
 
-  # ------ INSTALL JAVA + TOMCAT AUTOMATICALLY ------
   user_data = <<-EOF
 #!/bin/bash
 apt update -y
 apt install -y openjdk-17-jdk
 apt install -y tomcat10 tomcat10-admin tomcat10-common
-
 systemctl enable tomcat10
 systemctl start tomcat10
 EOF
