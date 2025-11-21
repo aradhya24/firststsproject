@@ -42,14 +42,22 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <!-- Tests (required, since your Jenkins build failed without this) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
+        <!-- WAR name -->
         <finalName>app</finalName>
 
         <plugins>
 
-            <!-- Disable Spring Boot repackaging -->
+            <!-- Disable Spring Boot repackage -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -58,7 +66,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Build correct WAR for Tomcat -->
+            <!-- Proper WAR for Tomcat -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
